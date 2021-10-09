@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 void main() {
@@ -35,6 +38,49 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+    setState(() {
+      if (quizBrain.isFinished() == true) {
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "FINISHED",
+          desc: "You've reached the end of the quiz.",
+          buttons: [
+            DialogButton(
+              child: const Text(
+                "RESET",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+            )
+          ],
+        ).show();
+        quizBrain.reset();
+        scoreKeeper = [];
+      } else {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(
+            const Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        } else {
+          scoreKeeper.add(
+            const Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
+
+        quizBrain.nextQuestion();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,29 +108,16 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextButton(
-              child: const Text('True'),
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                padding: const EdgeInsets.all(15),
-                primary: Colors.white,
-                backgroundColor: Colors.green,
-              ),
-              onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-
-                if (correctAnswer == true) {
-                  // ignore: avoid_print
-                  print("user got it right!");
-                } else {
-                  // ignore: avoid_print
-                  print("user got it wrong!");
-                }
-
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
-              },
-            ),
+                child: const Text('True'),
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                  padding: const EdgeInsets.all(15),
+                  primary: Colors.white,
+                  backgroundColor: Colors.green,
+                ),
+                onPressed: () {
+                  checkAnswer(true);
+                }),
           ),
         ),
         Expanded(
@@ -98,18 +131,7 @@ class _QuizPageState extends State<QuizPage> {
                 backgroundColor: Colors.red,
               ),
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-
-                if (correctAnswer == false) {
-                  // ignore: avoid_print
-                  print("user got it right!");
-                } else {
-                  // ignore: avoid_print
-                  print("user got it wrong!");
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
               child: const Text('False'),
             ),
@@ -122,9 +144,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
