@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-QuizBrain quizBrain = QuizBrain();
 void main() {
   runApp(const Quizzler());
 }
@@ -37,6 +36,8 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  QuizBrain quizBrain = QuizBrain();
+
   List<Icon> scoreKeeper = [];
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
