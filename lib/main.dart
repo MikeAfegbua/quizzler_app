@@ -112,7 +112,7 @@ class _QuizPageState extends State<QuizPage> {
                 style: TextButton.styleFrom(
                   textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                   padding: const EdgeInsets.all(15),
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                   backgroundColor: Colors.green,
                 ),
                 onPressed: () {
@@ -127,7 +127,7 @@ class _QuizPageState extends State<QuizPage> {
               style: TextButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20, color: Colors.white),
                 padding: const EdgeInsets.all(15),
-                primary: Colors.white,
+                foregroundColor: Colors.white,
                 backgroundColor: Colors.red,
               ),
               onPressed: () {
